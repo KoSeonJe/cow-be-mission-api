@@ -1,0 +1,57 @@
+package com.example.demo.post.service;
+
+import com.example.demo.member.domain.Member;
+import com.example.demo.member.service.MemberService;
+import com.example.demo.post.controller.request.CreatePostRequest;
+import com.example.demo.post.controller.response.AllPostsResponse;
+import com.example.demo.post.controller.response.OnePostResponse;
+import com.example.demo.post.domain.Post;
+import com.example.demo.post.repository.PostRepository;
+import jakarta.transaction.Transactional;
+import java.util.List;
+import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+@Service
+@Transactional
+@RequiredArgsConstructor
+public class PostService {
+
+  private final PostRepository postRepository;
+
+  private final MemberService memberService;
+
+  public void createPost(CreatePostRequest createPostRequest, Long memberId) {
+    Member postAuthor = memberService.findOneUser(memberId);
+    Post post = Post.create(createPostRequest, postAuthor);
+    postAuthor.addPost(post);
+    postRepository.save(post);
+  }
+
+  public OnePostResponse getOnePost(Long postId) {
+    Post findingPost = findOnePost(postId);
+    return OnePostResponse.from(findingPost);
+
+  }
+
+  public List<AllPostsResponse> getAllPosts() {
+    List<Post> allPosts = postRepository.findAll();
+    List<AllPostsResponse> allPostsResponse = allPosts.stream()
+        .map(AllPostsResponse::from)
+        .collect(Collectors.toList());
+    return allPostsResponse;
+  }
+
+  public void deletePost(Long postId) {
+    Post post = findOnePost(postId);
+    postRepository.delete(post);
+  }
+
+  public Post findOnePost(Long postId) {
+    return postRepository.findById(postId)
+        .orElseThrow(() -> new IllegalArgumentException("존재하지 않은 게시물입니다."));
+  }
+
+
+}
