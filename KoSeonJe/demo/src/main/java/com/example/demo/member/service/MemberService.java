@@ -17,23 +17,22 @@ public class MemberService {
   private final MemberRepository memberRepository;
 
   public void createUser(CreateMemberRequest createMemberRequest) {
-    Member member = Member.create(createMemberRequest);
+    Member member = createMemberRequest.toEntity();
     memberRepository.save(member);
-  }
-
-  public Member findOneUser(Long memberId) {
-    return memberRepository.findById(memberId)
-        .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 아이디입니다."));
   }
 
   public void updateUserInfo(Long memberId, UpdateMemberRequest updateMemberRequest) {
     Member member = findOneUser(memberId);
     member.update(updateMemberRequest.getAuthId(), updateMemberRequest.getName());
-    memberRepository.save(member);
   }
 
   public MemberResponse getMemberInfo(Long memberId) {
     Member member = findOneUser(memberId);
     return MemberResponse.from(member);
+  }
+
+  public Member findOneUser(Long memberId) {
+    return memberRepository.findById(memberId)
+        .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 아이디입니다."));
   }
 }

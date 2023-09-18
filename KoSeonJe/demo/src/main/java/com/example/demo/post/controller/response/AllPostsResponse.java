@@ -31,5 +31,4 @@ public class AllPostsResponse {
         .commentCount(post.getComments().size())
         .build();
   }
-
 }

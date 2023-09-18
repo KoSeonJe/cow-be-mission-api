@@ -20,12 +20,10 @@ public class CommentService {
   private final MemberService memberService;
   private final PostService postService;
 
-
   public void createComment(CreateCommentRequest createCommentRequest, Long memberId, Long postId) {
-    Member commentWriter = memberService.findOneUser(memberId);
-    Post writenPost = postService.findOnePost(postId);
-    Comment comment = Comment.create(createCommentRequest, commentWriter, writenPost);
-    writenPost.addComment(comment);
+    Member member = memberService.findOneUser(memberId);
+    Post post = postService.findOnePost(postId);
+    Comment comment = createCommentRequest.toEntity(member, post);
     commentRepository.save(comment);
   }
 }

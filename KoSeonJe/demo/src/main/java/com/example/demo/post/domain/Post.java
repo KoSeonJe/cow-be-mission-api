@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
@@ -47,12 +48,11 @@ public class Post {
   @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
   private List<Comment> comments = new ArrayList<>();
 
-  public static Post create(CreatePostRequest createPostRequest, Member postAuthor) {
-    return new Post(null, createPostRequest.getTitle(), createPostRequest.getContent(), null, postAuthor, null);
-  }
-
-  public void addComment(Comment comment) {
-    comments.add(comment);
+  @Builder
+  private Post(String title, String content, Member member) {
+    this.title = title;
+    this.content = content;
+    this.member = member;
   }
 
   public String getCommentsContent() {

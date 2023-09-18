@@ -1,5 +1,6 @@
 package com.example.demo.member.controller.request;
 
+import com.example.demo.member.domain.Member;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -11,4 +12,10 @@ public class CreateMemberRequest {
 
   private String name;
 
+  public Member toEntity(){
+    return Member.builder()
+        .authId(authId)
+        .name(name)
+        .build();
+  }
 }

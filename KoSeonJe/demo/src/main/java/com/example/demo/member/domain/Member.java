@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -34,16 +35,14 @@ public class Member {
   @OneToMany(mappedBy = "member")
   private List<Post> posts = new ArrayList<>();
 
-  public static Member create(CreateMemberRequest createMemberRequest) {
-    return new Member(null, createMemberRequest.getAuthId(), createMemberRequest.getName(), null);
+  @Builder
+  private Member(String authId, String name) {
+    this.authId = authId;
+    this.name = name;
   }
 
   public void update(String authId, String name) {
     this.authId = authId;
     this.name = name;
-  }
-
-  public void addPost(Post post) {
-    posts.add(post);
   }
 }

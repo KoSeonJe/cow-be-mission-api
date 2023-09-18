@@ -33,5 +33,4 @@ public class OnePostResponse {
         .comments(post.getCommentsContent())
         .build();
   }
-
 }

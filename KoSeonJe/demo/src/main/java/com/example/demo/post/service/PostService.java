@@ -23,15 +23,14 @@ public class PostService {
   private final MemberService memberService;
 
   public void createPost(CreatePostRequest createPostRequest, Long memberId) {
-    Member postAuthor = memberService.findOneUser(memberId);
-    Post post = Post.create(createPostRequest, postAuthor);
-    postAuthor.addPost(post);
+    Member member = memberService.findOneUser(memberId);
+    Post post = createPostRequest.toEntity(member);
     postRepository.save(post);
   }
 
   public OnePostResponse getOnePost(Long postId) {
-    Post findingPost = findOnePost(postId);
-    return OnePostResponse.from(findingPost);
+    Post post = findOnePost(postId);
+    return OnePostResponse.from(post);
 
   }
 
@@ -52,6 +51,4 @@ public class PostService {
     return postRepository.findById(postId)
         .orElseThrow(() -> new IllegalArgumentException("존재하지 않은 게시물입니다."));
   }
-
-
 }
