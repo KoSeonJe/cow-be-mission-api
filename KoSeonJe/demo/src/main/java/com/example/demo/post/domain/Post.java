@@ -1,8 +1,10 @@
 package com.example.demo.post.domain;
 
+import com.example.demo.comment.controller.response.AllCommentsResponse;
 import com.example.demo.comment.domain.Comment;
 import com.example.demo.member.domain.Member;
 import com.example.demo.post.controller.request.CreatePostRequest;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -55,9 +57,8 @@ public class Post {
     this.member = member;
   }
 
-  public String getCommentsContent() {
-    StringBuilder comments = new StringBuilder();
-    this.comments.stream().forEach(comment -> comments.append(comment.getContent()));
-    return String.valueOf(comments);
+  public List<AllCommentsResponse> getAllComment() {
+    return getComments().stream()
+        .map(AllCommentsResponse::from).toList();
   }
 }
