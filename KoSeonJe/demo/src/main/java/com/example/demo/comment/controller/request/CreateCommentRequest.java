@@ -14,6 +14,7 @@ public class CreateCommentRequest {
 
   public Comment toEntity(Member member, Post post){
     return Comment.builder()
+        .content(content)
         .member(member)
         .post(post)
         .build();

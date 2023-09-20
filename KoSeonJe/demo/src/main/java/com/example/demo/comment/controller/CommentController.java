@@ -20,7 +20,8 @@ public class CommentController {
   public void createComment(
       @RequestBody CreateCommentRequest createCommentRequest,
       @PathVariable("memberId") Long memberId,
-      @PathVariable("postId") Long postId) {
+      @PathVariable("postId") Long postId
+  ) {
     commentService.createComment(createCommentRequest, memberId, postId);
   }
 

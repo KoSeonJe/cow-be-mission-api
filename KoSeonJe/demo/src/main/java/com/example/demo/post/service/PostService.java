@@ -7,7 +7,7 @@ import com.example.demo.post.controller.response.AllPostsResponse;
 import com.example.demo.post.controller.response.OnePostResponse;
 import com.example.demo.post.domain.Post;
 import com.example.demo.post.repository.PostRepository;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -28,12 +28,14 @@ public class PostService {
     postRepository.save(post);
   }
 
+  @Transactional(readOnly = true)
   public OnePostResponse getOnePost(Long postId) {
     Post post = findOnePost(postId);
     return OnePostResponse.from(post);
 
   }
 
+  @Transactional(readOnly = true)
   public List<AllPostsResponse> getAllPosts() {
     List<Post> allPosts = postRepository.findAll();
     List<AllPostsResponse> allPostsResponse = allPosts.stream()
@@ -47,6 +49,7 @@ public class PostService {
     postRepository.delete(post);
   }
 
+  @Transactional(readOnly = true)
   public Post findOnePost(Long postId) {
     return postRepository.findById(postId)
         .orElseThrow(() -> new IllegalArgumentException("존재하지 않은 게시물입니다."));

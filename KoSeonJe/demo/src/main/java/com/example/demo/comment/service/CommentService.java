@@ -7,7 +7,7 @@ import com.example.demo.member.domain.Member;
 import com.example.demo.member.service.MemberService;
 import com.example.demo.post.domain.Post;
 import com.example.demo.post.service.PostService;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
